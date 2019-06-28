@@ -29,6 +29,7 @@ class App extends Component {
             <Route exact path="/courses/:id" render={(props) => <CourseDetail {...props} />} />
             <Route exact path="/sign-in" render={(props) => <UserSignIn {...props} />} />
             <Route exact path="/sign-up" render={() => <UserSignUp />} />
+            <Route exact path="/sign-out" render={() => <Redirect to="/courses" />} />
             <Route exact path="/create-course" render={() => <CreateCourse />} />
             <Route exact path="/courses/:id/update" render={(props) => <UpdateCourse {...props} />} />
           </Switch>
