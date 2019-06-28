@@ -14,6 +14,7 @@ import UserSignIn from './Components/UserSignIn';
 import UserSignUp from './Components/UserSignUp';
 import CreateCourse from './Components/CreateCourse';
 import UpdateCourse from './Components/UpdateCourse';
+import PrivateRoute from './Components/PrivateRoute';
 
 class App extends Component {
 
@@ -30,8 +31,8 @@ class App extends Component {
             <Route exact path="/sign-in" render={(props) => <UserSignIn {...props} />} />
             <Route exact path="/sign-up" render={() => <UserSignUp />} />
             <Route exact path="/sign-out" render={() => <Redirect to="/courses" />} />
-            <Route exact path="/create-course" render={() => <CreateCourse />} />
-            <Route exact path="/courses/:id/update" render={(props) => <UpdateCourse {...props} />} />
+            <PrivateRoute exact path="/create-course" component={CreateCourse} />
+            <PrivateRoute exact path="/courses/:id/update" component={UpdateCourse} />} />
           </Switch>
         </>
     );
