@@ -38,6 +38,7 @@ class Provider extends Component {
                     window.localStorage.setItem("password", password);
 
                     this.props.history.push('/courses');
+
                 })
             } else {
                 this.props.history.push('/error')
