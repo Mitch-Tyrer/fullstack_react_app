@@ -21,10 +21,12 @@ class Provider extends Component {
 
         fetch('http://localhost:5000/api/users', {
             method: 'GET',
-            headers: {
+            mode: 'cors',
+            headers: new Headers({
                 'Authorization': 'Basic ' + btoa(`${emailAddress}:${password}`),
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            }),
+            credentials: 'same-origin'
         }).then( res => {
             if(res.status === 200) {
                 res.json().then(data => {
