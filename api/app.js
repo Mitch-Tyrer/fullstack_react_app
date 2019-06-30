@@ -13,15 +13,18 @@ const cors = require('cors');
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
 
 // create the Express app
-const app = express();
+const app = express()
 
 //Enable CORS
-app.use('*', cors());
+app.use(cors());
+
 
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+
 //connecting to the database
 mongoose.connect('mongodb://localhost:27017/fsjstd-restapi', { useNewUrlParser: true});
 const db = mongoose.connection;

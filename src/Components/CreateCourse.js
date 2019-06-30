@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Consumer } from './Context';
+import axios from 'axios';
 
 export default class CreateCourse extends Component {
     state = {
+        user: '',
         title: '',
         description: '',
         estimatedTime: '',
@@ -17,14 +19,37 @@ export default class CreateCourse extends Component {
         });
     }
 
-    handleSubmit = (e, emailAddress, password) => {
+    handleSubmit = (e, emailAddress, password, user) => {
         if (e) {
             e.preventDefault();
         }
+        // Axios Post Request
+        axios({
+            method: 'POST',
+            url:'http://localhost:5000/api/courses',
+            auth:{
+                username: emailAddress,
+                password: password
+            },
+            data: {
+                user: user.user._id,
+                title: this.state.title,
+                description: this.state.description,
+                estimatedTime: this.state.estimatedTime,
+                materialsNeeded: this.state.materialsNeeded
+            },
+            responseType: 'json'
 
+        })
+        .then(() => this.props.history.push('/courses'))
+        .catch(err => console.log("Problem Fetching and Parsing Data", err))
+    }
+
+        // FETCH API POST REQUEST
+        /* 
         fetch('http://localhost:5000/api/courses', {
             method: 'POST',
-            mode: 'cors',
+            credentials: 'same-origin',
             headers: new Headers({ 
                 'Authorization': 'Basic ' + btoa(`${emailAddress}:${password}`),
                 'Content-Type': 'application/json; charset=UTF-8'
@@ -37,17 +62,16 @@ export default class CreateCourse extends Component {
                 estimatedTime: this.state.estimatedTime,
                 materialsNeeded: this.state.materialsNeeded,
             }),
-            credentials: 'include'
         })
             .then(res => res.json())
             .then(data => console.log(data))
-    }
+    } */
 
     render() {
         return (
             <Consumer>
                 {
-                    ({ emailAddress, password }) => (
+                    ({ emailAddress, password, user }) => (
                         <div className="bounds course--detail">
                             <h1>Create Course</h1>
                             <div>
@@ -60,7 +84,7 @@ export default class CreateCourse extends Component {
                                         </ul>
                                     </div>
                                 </div>
-                                <form onSubmit={e => this.handleSubmit(e, emailAddress, password)}>
+                                <form onSubmit={e => this.handleSubmit(e, emailAddress, password, user)}>
                                     <div className="grid-66">
                                         <div className="course--header">
                                             <h4 className="course--label">Course</h4>

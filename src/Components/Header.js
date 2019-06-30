@@ -11,7 +11,7 @@ const Header = () => {
                         <div className="bounds">
                             <h1 className="header--logo">Courses</h1>
                             <nav>
-                                <span>Welcome { `${user.data.firstName} ${user.data.lastName}` }!</span>
+                                <span>Welcome { `${user.user.firstName} ${user.user.lastName}` }!</span>
                                 <Link className="signin" to="/sign-out" onClick={signOut} >Sign Out</Link>
                             </nav>
                         </div>
