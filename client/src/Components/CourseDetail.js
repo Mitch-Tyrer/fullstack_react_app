@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { Consumer } from './Context';
+import axios from 'axios';
 
 export default class CourseDetail extends Component {
     state = {
@@ -18,6 +19,22 @@ export default class CourseDetail extends Component {
             .catch(err => console.log('Error fetching and parsing data', err))
     }
 
+    handleDelete = (e, emailAddress, password) => {
+        if (e) {
+            e.preventDefault();
+        }
+
+        axios({
+            method: 'DELETE',
+            url: "http://localhost:5000/api/courses/" + this.props.match.params.id,
+            auth:{
+                username: emailAddress,
+                password: password
+            }
+        }).then(() => this.props.history.push('/courses'))
+        .catch(err => console.log("error fetching data", err))
+    }
+
     render() {
         const course = this.state.course
         const courseUser = this.state.user
@@ -28,11 +45,11 @@ export default class CourseDetail extends Component {
                         <div className="grid-100">
                             <Consumer>
                                 {
-                                    ({ user, isLoggedIn }) => (
+                                    ({ user, isLoggedIn, emailAddress, password }) => (
                                         isLoggedIn && (user._id === courseUser._id )? (
                                             <span>
                                                 <Link className="button" to={`/courses/${course._id}/update`}>Update Course</Link>
-                                                <Link className="button" to="#">Delete Course</Link>
+                                                <Link className="button" to="#" onClick={e => this.handleDelete(e, emailAddress, password)}>Delete Course</Link>
                                             </span>
                                         ) : (<span></span>)
                                 )}
