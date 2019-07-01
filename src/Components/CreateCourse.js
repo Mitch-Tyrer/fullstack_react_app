@@ -32,7 +32,7 @@ export default class CreateCourse extends Component {
                 password: password
             },
             data: {
-                user: user.user._id,
+                user: user._id,
                 title: this.state.title,
                 description: this.state.description,
                 estimatedTime: this.state.estimatedTime,

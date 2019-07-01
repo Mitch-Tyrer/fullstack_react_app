@@ -30,7 +30,7 @@ class Provider extends Component {
             if(res.status === 200){
                 let user = res.data;
                 this.setState({
-                    user: {user},
+                    user: user,
                     emailAddress: user.emailAddress,
                     password: user.password,
                     isLoggedIn: true
