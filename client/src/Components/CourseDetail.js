@@ -10,14 +10,40 @@ export default class CourseDetail extends Component {
         user: []
     }
 
+    componentDidMount () {
+        axios({
+            method: 'GET',
+            url: "http://localhost:5000/api/courses/" + this.props.match.params.id
+        }).then( res => {
+            this.setState({ course: res.data, user: res.data.user });
+        })
+        .catch(err => {
+            if(err.response.status === 400){
+                this.props.history.push('/notfound');
+                console.log("Error Parsing and Fetching Data", err)
+            } else if (err.response.status === 500) {
+                this.props.history.push('/error');
+                console.log("Error Parsing and Fetching Data", err)
+            }
+        })
+    }
+/* 
     componentDidMount() {
         fetch("http://localhost:5000/api/courses/" + this.props.match.params.id)
             .then(res => res.json())
             .then(resData =>{
                 this.setState({ course: resData, user: resData.user })
             } )
-            .catch(err => console.log('Error fetching and parsing data', err))
-    }
+            .catch(err => {
+                if(err.status === 404){
+                    this.props.history.push('/notfound');
+                    console.log("Error Parsing and Fetching Data", err)
+                } else if (err.status === 500) {
+                    this.props.history.push('/error');
+                    console.log("Error Parsing and Fetching Data", err)
+                }
+            })
+    } */
 
     handleDelete = (e, emailAddress, password) => {
         if (e) {
@@ -32,7 +58,15 @@ export default class CourseDetail extends Component {
                 password: password
             }
         }).then(() => this.props.history.push('/courses'))
-        .catch(err => console.log("error fetching data", err))
+        .catch(err => {
+            if(err.status === 401){
+                this.props.history.push('/forbidden');
+                console.log("Error Parsing and Fetching Data", err)
+            } else if (err.status === 500) {
+                this.props.history.push('/error');
+                console.log("Error Parsing and Fetching Data", err)
+            }
+        })
     }
 
     render() {

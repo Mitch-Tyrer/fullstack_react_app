@@ -15,6 +15,9 @@ import UserSignUp from './Components/UserSignUp';
 import CreateCourse from './Components/CreateCourse';
 import UpdateCourse from './Components/UpdateCourse';
 import PrivateRoute from './Components/PrivateRoute';
+import NotFound from './Components/NotFound';
+import Forbidden from './Components/Forbidden';
+import Error from './Components/Error';
 
 class App extends Component {
 
@@ -32,7 +35,10 @@ class App extends Component {
             <Route exact path="/sign-up" render={() => <UserSignUp />} />
             <Route exact path="/sign-out" render={() => <Redirect to="/courses" />} />
             <PrivateRoute exact path="/create-course" component={CreateCourse} />
-            <PrivateRoute exact path="/courses/:id/update" component={UpdateCourse} />} />
+            <PrivateRoute exact path="/courses/:id/update" render={(props) => <UpdateCourse {...props} />} />} />
+            <Route exact path="/notfound" component={NotFound} />
+            <Route exact path="/forbidden" component={Forbidden} />
+            <Route exact path="/error" component={Error} />
           </Switch>
         </>
     );

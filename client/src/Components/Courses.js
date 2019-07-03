@@ -1,18 +1,45 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default class Courses extends Component {
     state = {
         courses: []
     }
 
-    componentDidMount() {
+    componentDidMount () {
+        axios({
+            method: 'GET',
+            url: "http://localhost:5000/api/courses/"
+        }).then( res => {
+            this.setState({ courses: res.data});
+        })
+        .catch(err => {
+            if(err.response.status === 400){
+                this.props.history.push('/notfound');
+                console.log("Error Parsing and Fetching Data", err)
+            } else if (err.response.status === 500) {
+                this.props.history.push('/error');
+                console.log("Error Parsing and Fetching Data", err)
+            }
+        })
+    }
+
+/*     componentDidMount() {
         fetch('http://localhost:5000/api/courses')
             .then(res => res.json())
             .then(resData => this.setState({ courses: resData }))
-            .catch(err => console.log("Error fetching and parsing data", err))
+            .catch(err => {
+                if(err.response.status === 400){
+                    this.props.history.push('/notfound');
+                    console.log("Error Parsing and Fetching Data", err)
+                } else if (err.response.status === 500) {
+                    this.props.history.push('/error');
+                    console.log("Error Parsing and Fetching Data", err)
+                }
+            })
     }
-
+ */
     render() {
         return (
             <div className="bounds">

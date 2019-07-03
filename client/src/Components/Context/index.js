@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
-const UserContext = React.createContext();
+export const UserContext = React.createContext();
 
 export const Consumer = UserContext.Consumer;
+
 
 class Provider extends Component {
     state = {
@@ -35,14 +36,18 @@ class Provider extends Component {
                     password: user.password,
                     isLoggedIn: true
                 });
-                window.localStorage.setItem("emailAddress", emailAddress);
-                window.localStorage.setItem("password", password);
 
                 this.props.history.push('/courses');
-            } else {
-                this.props.history.push('/error')
             }
-        }).catch( err => console.log("Problem Fetching and Parsing Data", err));
+        }).catch(err => {
+            if(err.response.status === 400){
+                this.props.history.push('/notfound');
+                console.log("Error Parsing and Fetching Data", err)
+            } else if (err.response.status === 500) {
+                this.props.history.push('/error');
+                console.log("Error Parsing and Fetching Data", err)
+            }
+        })
 
 
 //      FETCH API VERSION OF LOGIN

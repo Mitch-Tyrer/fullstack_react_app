@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Consumer } from './Context';
+import { UserContext, Consumer } from './Context';
 
 export default class UpdateCourse extends Component {
     state={
@@ -12,13 +12,17 @@ export default class UpdateCourse extends Component {
         materialsNeeded: '',
         user: {}
     }
-
+    static contextType = UserContext;
     componentDidMount() {
         axios({
             method: 'GET',
             url: 'http://localhost:5000/api/courses/' + this.props.match.params.id
         }).then(res => {
-            if(res.status === 200){
+            
+            const course = res.data
+            const user = this.context.user
+            console.log(course.user._id, user._id)
+            if ( course.user._id === user._id) {
                 this.setState({
                     courseID: res.data._id,
                     title: res.data.title,
@@ -26,10 +30,14 @@ export default class UpdateCourse extends Component {
                     estimatedTime: res.data.estimatedTime,
                     materialsNeeded: res.data.materialsNeeded,
                     user: res.data.user
-                })
+            })
+            } else {
+                this.props.history.push('/forbidden')
             }
+
         }).catch(err => console.log("error fetching data", err))
-    }
+    
+}
 
     handleChange = (e) => {
         this.setState({

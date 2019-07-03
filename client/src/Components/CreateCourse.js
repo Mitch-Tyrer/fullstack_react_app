@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Consumer } from './Context';
 import axios from 'axios';
-import Error from './Error';
 
 export default class CreateCourse extends Component {
     state = {
@@ -79,7 +78,18 @@ export default class CreateCourse extends Component {
         return (
             <div className="bounds course--detail">
                 <h1>Create Course</h1>
-                <Error err={this.state.err} />
+                {this.state.err.error ?
+                    <div>
+                        <h2 className="validation--errors--label">Validation errors</h2>
+                        <div className="validation-errors">
+                            <ul>
+                                {this.state.err.error.map((err, i) => <li key={i}>{err}</li>)}
+                            </ul>
+                        </div>
+                    </div> : ""
+                }
+
+                {/* <Error err={this.state.err} /> */}
                 <Consumer>
                     {
                         ({ emailAddress, password, user }) => (

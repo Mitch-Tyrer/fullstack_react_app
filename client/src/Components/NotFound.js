@@ -1,17 +1,18 @@
 import React from 'react';
 import '../styles/404.css';
 
-const Error = () => (
+const NotFound = () => (
   <div id="notfound">
   <div className="notfound">
     <div className="notfound-404">
-      <h1><span>E</span><span>R</span><span>R</span><span>O</span><span>R</span></h1>
+      <h3>Oops! Page not found</h3>
+      <h1><span>4</span><span>0</span><span>4</span></h1>
     </div>
-    <h2>Sorry! We just encountered an unexpected error!</h2>
+    <h2>we are sorry, but the page you requested was not found</h2>
   </div>
 </div>
 //<!-- This templates was made by Colorlib (https://colorlib.com) -->//
 
 );
 
-export default Error;
+export default NotFound;
