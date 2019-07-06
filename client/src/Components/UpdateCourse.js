@@ -21,7 +21,7 @@ export default class UpdateCourse extends Component {
             
             const course = res.data
             const user = this.context.user
-            console.log(course.user._id, user._id)
+
             if ( course.user._id === user._id) {
                 this.setState({
                     courseID: res.data._id,

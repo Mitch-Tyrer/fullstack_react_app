@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export const UserContext = React.createContext();
 
@@ -9,6 +10,7 @@ export const Consumer = UserContext.Consumer;
 
 class Provider extends Component {
     state = {
+        authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
         user: {},
         emailAddress: '',
         password: '',
@@ -36,6 +38,9 @@ class Provider extends Component {
                     password: user.password,
                     isLoggedIn: true
                 });
+                Cookies.set('authenticatedUser', JSON.stringify(this.state.user))
+                window.localStorage.setItem("emailAddress", emailAddress);
+                window.localStorage.setItem("password", password);
 
                 this.props.history.push('/courses');
             }
@@ -83,21 +88,23 @@ class Provider extends Component {
     }
     handleSignOut = () => {
         window.localStorage.clear();
-
         this.setState({
             user: {},
             emailAddress: '',
             password: '',
             isLoggedIn: false
         });
+        Cookies.remove('authenticatedUser');
 
         this.props.history.push('/courses');
  }
 
 render() {
+    const { authenticatedUser } = this.state;
     return (
         <UserContext.Provider value={
             {
+                authenticatedUser,
                 user: this.state.user,
                 emailAddress: this.state.emailAddress,
                 password: this.state.password,
